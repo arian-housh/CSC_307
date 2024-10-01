@@ -57,6 +57,15 @@ const addUser = (user) => {
     return user;
     };
 
+const deleteUserById = (id) => {
+    const userToDelete = findUserById(id);
+    if (userToDelete !== undefined) {
+        users["users_list"] = users["users_list"].filter((user) => user["id"] !== id);
+        return true;
+    }
+    return false;
+};
+
 app.get("/", (req, res) => {
         res.send("Hello World!!!");
     });
@@ -96,6 +105,16 @@ app.get("/users/:id", (req, res) => {
     addUser(userToAdd);
     res.send();
   });
+
+  app.delete("/users/:id", (req, res) => {
+    const id = req.params["id"];
+    const success = deleteUserById(id);
+    if (success) {
+        res.status(200).send(`User with id ${id} deleted.`);
+    } else {
+        res.status(404).send("Resource not found.");
+    }
+});
 
 app.listen(port, () => {
   console.log(
