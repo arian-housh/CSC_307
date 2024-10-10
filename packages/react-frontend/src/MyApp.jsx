@@ -17,19 +17,25 @@ function MyApp() {
     setCharacters(updated);
   }
 
+
   function updateList(person) {
     postUser(person)
       .then((response) => {
-        if (response.status === 201) { // Check if the response is 201
-          setCharacters([...characters, person]);
+        if (response.status === 201) { // Ensure the response status is 201 
+          return response.json(); 
         } else {
-          console.log("Failed to add user, status code:", response.status);
+          throw new Error(`Failed to add user, status code: ${response.status}`);
         }
+      })
+      .then((newUser) => {
+        setCharacters([...characters, newUser]); 
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+}
+
+
 
   function fetchUsers() {
     const promise = fetch("http://localhost:8000/users");
@@ -47,6 +53,7 @@ function MyApp() {
 
     return promise;
   }
+
   
 
   useEffect(() => {
