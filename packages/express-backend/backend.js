@@ -38,6 +38,12 @@ const users = {
     ]
   };
 
+  const generateId = () => {
+    const letters = Array(3).fill(null).map(() => String.fromCharCode(97 + Math.floor(Math.random() * 26))).join('');
+    const numbers = Math.floor(Math.random() * 900) + 100; 
+    return letters + numbers;
+};
+
 const findUserByName = (name) => {
     return users["users_list"].filter(
       (user) => user["name"] === name
@@ -104,6 +110,7 @@ app.get("/users/:id", (req, res) => {
   
   app.post("/users", (req, res) => {
     const userToAdd = req.body;
+    userToAdd.id = generateId();
     addUser(userToAdd);
     res.status(201).send(userToAdd);
   });
