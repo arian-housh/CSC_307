@@ -119,7 +119,7 @@ app.get("/users/:id", (req, res) => {
     const id = req.params["id"];
     const success = deleteUserById(id);
     if (success) {
-        res.status(200).send(`User with id ${id} deleted.`);
+        res.status(204).send(`User with id ${id} deleted.`);
     } else {
         res.status(404).send("Resource not found.");
     }

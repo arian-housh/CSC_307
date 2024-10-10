@@ -11,11 +11,31 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
-    });
-    setCharacters(updated);
+    const characterToRemove = characters[index]; // Get the character to remove
+    const userId = characterToRemove.id; // Get the user's ID
+
+    deleteUser(userId)
+      .then((response) => {
+        if (response.status === 204) { // If the delete operation was successful
+          const updatedCharacters = characters.filter((_, i) => i !== index); 
+          setCharacters(updatedCharacters);
+        } else if (response.status === 404) {
+          console.log("User not found, status code:", response.status);
+        } else {
+          console.log("Failed to delete user, status code:", response.status);
+        }
+      })
+      .catch((error) => {
+        console.log("Error occurred while deleting user:", error);
+      });
   }
+
+  function deleteUser(userId) {
+    return fetch(`http://localhost:8000/users/${userId}`, {
+      method: "DELETE", // Use DELETE method
+    });
+  }
+
 
 
   function updateList(person) {
