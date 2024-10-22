@@ -12,7 +12,7 @@ function MyApp() {
 
   function removeOneCharacter(index) {
     const characterToRemove = characters[index]; // Get the character to remove
-    const userId = characterToRemove.id; // Get the user's ID
+    const userId = characterToRemove._id; // Get the user's ID
 
     deleteUser(userId)
       .then((response) => {
